@@ -1,0 +1,29 @@
+# sample_data/findings.json
+
+{
+  "provider": "generic",
+  "findings": [
+    {
+      "tool": "Kubescape",
+      "severity": "High",
+      "resource": "deployment/ai-api",
+      "title": "Privileged container detected",
+      "description": "The workload is running with privileged permissions.",
+      "namespace": "security"
+    },
+    {
+      "tool": "Trivy",
+      "severity": "Critical",
+      "resource": "image/backend-api",
+      "title": "Critical vulnerability in container image",
+      "description": "The image contains a vulnerable package with remote code execution risk."
+    },
+    {
+      "tool": "Falco",
+      "severity": "High",
+      "resource": "pod/runtime-shell",
+      "title": "Shell spawned inside container",
+      "description": "A shell was executed inside a running container."
+    }
+  ]
+}
