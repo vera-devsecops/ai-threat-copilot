@@ -1,7 +1,10 @@
  # app/schemas.py
 
 from pydantic import BaseModel
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Literal
+
+
+Provider = Literal["generic", "aws", "azure", "gcp"]
 
 
 class RawFinding(BaseModel):
@@ -15,8 +18,8 @@ class RawFinding(BaseModel):
 
 
 class ProviderFindingsRequest(BaseModel):
-    provider: str = "generic"
-    findings: List[RawFinding]
+    provider: Provider = "generic"
+    findings: List[Dict[str, Any]]
 
 
 class NormalizedFinding(BaseModel):
