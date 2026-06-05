@@ -1,0 +1,34 @@
+{
+  "provider": "generic",
+  "findings": [
+    {
+      "tool": "Kubescape",
+      "severity": "High",
+      "resource": "deployment/ai-api",
+      "title": "Privileged container detected",
+      "description": "The workload is running with privileged permissions.",
+      "namespace": "security"
+    },
+    {
+      "tool": "Trivy",
+      "severity": "Critical",
+      "resource": "image/ai-api:latest",
+      "title": "Critical container vulnerability",
+      "description": "Container image includes a package with remote code execution risk."
+    },
+    {
+      "tool": "Falco",
+      "severity": "High",
+      "resource": "pod/ai-api",
+      "title": "Shell spawned inside container",
+      "description": "A shell was executed inside a running container, which may indicate compromise."
+    },
+    {
+      "tool": "Custom LLM Security Rule",
+      "severity": "High",
+      "resource": "rag-pipeline",
+      "title": "Prompt injection risk",
+      "description": "User-controlled documents are passed into the LLM context without filtering."
+    }
+  ]
+}
