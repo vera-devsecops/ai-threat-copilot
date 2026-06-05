@@ -5,9 +5,18 @@ import json
 from openai import OpenAI
 from app.schemas import NormalizedFinding
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
+
+def get_openai_client() -> OpenAI:
+
+    api_key = os.getenv("OPENAI_API_KEY")
+
+    if not api_key:
+        raise RuntimeError(
+            "OPENAI_API_KEY is not configured. Set it as an environment "
+            "variable or in a local .env file before using AI analysis."
+        )
+
+    return OpenAI(api_key=api_key)
 
 
 def build_ai_context(
@@ -39,6 +48,8 @@ Analyze these threat findings and generate:
 Threat Findings:
 {build_ai_context(findings)}
 """
+
+    client = get_openai_client()
 
     response = client.responses.create(
         model="gpt-4.1-mini",

@@ -54,6 +54,21 @@ The platform normalises findings into a common schema, maps risks to threat-mode
 
 ---
 
+## Configuration
+
+Do not hardcode API keys in the application.
+
+Set your OpenAI API key as an environment variable:
+
+```bash
+export OPENAI_API_KEY="your_api_key_here"
+```
+
+For local development, you can also copy `.env.example` to `.env` and set
+the value there. `.env` is ignored by Git and should not be committed.
+
+---
+
 ## Architecture Overview
 
 Security findings are ingested from cloud and Kubernetes security tooling, normalised into a common internal format, enriched with threat-modeling context, and passed through an AI-assisted analysis layer to generate prioritised security insights and remediation guidance.
