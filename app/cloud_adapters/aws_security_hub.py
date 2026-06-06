@@ -8,10 +8,9 @@ def from_aws_security_hub(finding: dict) -> RawFinding:
     resource = resources[0].get("Id", "unknown") if resources else "unknown"
 
     return RawFinding(
-        tool="AWS Security Hub",
+        provider="AWS Security Hub",
         severity=finding.get("Severity", {}).get("Label", "Unknown"),
         resource=resource,
-        title=finding.get("Title", "Untitled AWS finding"),
+        issue=finding.get("Title", "Untitled AWS finding"),
         description=finding.get("Description", "No description provided."),
-        category=(finding.get("Types") or [""])[0],
     )
