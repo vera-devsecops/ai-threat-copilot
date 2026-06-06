@@ -85,3 +85,7 @@ STRIDE Mapping
 AI-Assisted Analysis
 ↓
 Remediation Guidance
+
+## Documentation
+
+- [Architecture Overview](docs/architecture.md)
