@@ -1,3 +1,6 @@
+from app.openai_client import generate_openai_response, has_openai_api_key
+
+
 def build_remediation_prompt(finding):
     return f"""
 You are a senior cloud security engineer.
@@ -27,4 +30,17 @@ def generate_llm_remediation_stub(finding):
         "prompt": prompt,
         "status": "stub",
         "message": "LLM integration placeholder. Connect OpenAI or local Ollama later."
+    }
+
+
+def generate_llm_remediation(finding):
+    prompt = build_remediation_prompt(finding)
+
+    if not has_openai_api_key():
+        return generate_llm_remediation_stub(finding)
+
+    return {
+        "prompt": prompt,
+        "status": "generated",
+        "message": generate_openai_response(prompt),
     }
