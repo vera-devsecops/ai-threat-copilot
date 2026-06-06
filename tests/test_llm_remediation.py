@@ -1,5 +1,5 @@
 from app.schemas import NormalizedFinding
-from app.llm_remediation import build_remediation_prompt, generate_llm_remediation_stub
+from app.llm_remediation import build_remediation_prompt, generate_llm_remediation
 
 
 def test_build_remediation_prompt_contains_finding_context():
@@ -12,7 +12,7 @@ def test_build_remediation_prompt_contains_finding_context():
         stride_category="Information Disclosure",
         likely_impact="Sensitive data exposure",
         risk_score=60,
-        remediation="Restrict public access"
+        remediation="Restrict public access",
     )
 
     prompt = build_remediation_prompt(finding)
@@ -32,10 +32,10 @@ def test_generate_llm_remediation_stub():
         stride_category="Information Disclosure",
         likely_impact="Sensitive data exposure",
         risk_score=60,
-        remediation="Restrict public access"
+        remediation="Restrict public access",
     )
 
-    result = generate_llm_remediation_stub(finding)
+    result = generate_llm_remediation(finding)
 
     assert result["status"] == "stub"
-    assert "prompt" in result
+    assert result["remediation"]["issue"] == "Public S3 bucket"
