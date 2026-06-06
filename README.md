@@ -88,4 +88,4 @@ Remediation Guidance
 
 ## Documentation
 
-- [Architecture Overview](docs/architecture.md)
+- [Architecture Overview](./docs/architecture.md)
