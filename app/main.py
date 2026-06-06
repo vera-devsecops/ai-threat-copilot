@@ -23,7 +23,7 @@ from app.cloud_adapters.gcp_scc import (
 from app.correlation_engine import correlate_findings
 
 from app.llm_remediation import (
-    generate_llm_remediation_stub,
+    generate_llm_remediation,
 )
 
 
@@ -112,13 +112,13 @@ def llm_remediation(request: ProviderFindingsRequest):
     normalized = normalize_findings(raw_findings)
 
     results = [
-        generate_llm_remediation_stub(finding)
+        generate_llm_remediation(finding)
         for finding in normalized
     ]
 
     return {
         "summary": (
-            f"Generated LLM remediation prompts "
+            f"Generated LLM remediation analysis "
             f"for {len(results)} findings."
         ),
         "results": results,
