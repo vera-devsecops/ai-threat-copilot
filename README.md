@@ -85,6 +85,7 @@ STRIDE Mapping
 AI-Assisted Analysis
 ↓
 Remediation Guidance
+```
 
 ## Documentation
 
