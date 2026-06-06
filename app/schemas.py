@@ -1,25 +1,13 @@
- # app/schemas.py
-
 from pydantic import BaseModel
-from typing import List, Optional, Dict, Any, Literal
-
-
-Provider = Literal["generic", "aws", "azure", "gcp"]
+from typing import List
 
 
 class RawFinding(BaseModel):
-    tool: str
+    provider: str
     severity: str
     resource: str
-    title: str
+    issue: str
     description: str
-    namespace: Optional[str] = None
-    category: Optional[str] = None
-
-
-class ProviderFindingsRequest(BaseModel):
-    provider: Provider = "generic"
-    findings: List[Dict[str, Any]]
 
 
 class NormalizedFinding(BaseModel):
@@ -30,15 +18,17 @@ class NormalizedFinding(BaseModel):
     description: str
     stride_category: str
     likely_impact: str
+    risk_score: int = 0
+
+
+class CorrelatedRisk(BaseModel):
+    risk: str
+    severity: str
+    description: str
 
 
 class CopilotReport(BaseModel):
     summary: str
     highest_risks: List[NormalizedFinding]
     recommended_actions: List[str]
-
-
-class AIAssistedReport(BaseModel):
-    summary: str
-    normalized_findings: List[NormalizedFinding]
-    ai_analysis: Dict[str, Any]
+    correlated_risks: List[CorrelatedRisk]

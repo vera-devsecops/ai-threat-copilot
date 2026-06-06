@@ -12,10 +12,9 @@ def from_azure_defender(alert: dict) -> RawFinding:
         resource = resource_ids[0].get("azureResourceId", "unknown")
 
     return RawFinding(
-        tool="Microsoft Defender for Cloud",
+        provider="Microsoft Defender for Cloud",
         severity=properties.get("severity", "Unknown"),
         resource=resource,
-        title=properties.get("alertDisplayName", "Untitled Azure alert"),
+        issue=properties.get("alertDisplayName", "Untitled Azure alert"),
         description=properties.get("description", "No description provided."),
-        category=properties.get("alertType", ""),
     )

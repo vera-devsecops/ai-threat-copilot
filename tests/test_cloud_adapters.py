@@ -33,8 +33,10 @@ def test_aws_adapter():
 
     adapted = from_aws_security_hub(finding)
 
-    assert adapted.tool == "AWS Security Hub"
+    assert adapted.provider == "AWS Security Hub"
     assert adapted.severity == "High"
+    assert adapted.resource == "arn:aws:iam::123456789:role/admin"
+    assert adapted.issue == "Privilege escalation risk"
 
 
 def test_azure_adapter():
@@ -55,8 +57,10 @@ def test_azure_adapter():
 
     adapted = from_azure_defender(finding)
 
-    assert adapted.tool == "Microsoft Defender for Cloud"
+    assert adapted.provider == "Microsoft Defender for Cloud"
+    assert adapted.severity == "Medium"
     assert adapted.resource == "vm-prod-01"
+    assert adapted.issue == "Suspicious login"
 
 
 def test_gcp_adapter():
@@ -71,5 +75,7 @@ def test_gcp_adapter():
 
     adapted = from_gcp_scc(finding)
 
-    assert adapted.tool == "Google Security Command Center"
+    assert adapted.provider == "Google Security Command Center"
     assert adapted.severity == "High"
+    assert adapted.resource == "gke-cluster-prod"
+    assert adapted.issue == "ContainerThreat"

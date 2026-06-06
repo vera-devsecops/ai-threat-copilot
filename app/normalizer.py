@@ -1,54 +1,51 @@
-# app/normalizer.py
-
 from app.schemas import RawFinding, NormalizedFinding
-
-
-def map_stride(text: str) -> str:
-
-    text = text.lower()
-
-    if "privilege" in text or "rbac" in text:
-        return "Elevation of Privilege"
-
-    if "secret" in text or "exposure" in text or "data" in text:
-        return "Information Disclosure"
-
-    if "injection" in text or "tamper" in text:
-        return "Tampering"
-
-    if "denial" in text:
-        return "Denial of Service"
-
-    if "identity" in text or "spoof" in text:
-        return "Spoofing"
-
-    return "Security Misconfiguration"
+from app.risk_scoring import calculate_risk_score
 
 
 def normalize_finding(finding: RawFinding) -> NormalizedFinding:
 
     combined_text = (
-        f"{finding.title} "
-        f"{finding.description} "
-        f"{finding.category or ''}"
+        f"{finding.issue} {finding.description}"
     )
 
-    return NormalizedFinding(
-        source_tool=finding.tool,
+    combined_text_lower = combined_text.lower()
+
+    if "public" in combined_text_lower:
+        stride = "Information Disclosure"
+        impact = "Sensitive data exposure"
+    elif "privilege" in combined_text_lower:
+        stride = "Elevation of Privilege"
+        impact = "Potential privilege escalation"
+    elif "denial" in combined_text_lower:
+        stride = "Denial of Service"
+        impact = "Service disruption"
+    else:
+        stride = "Tampering"
+        impact = "Potential unauthorized modification"
+
+    risk_score = calculate_risk_score(
         severity=finding.severity,
-        affected_resource=finding.resource,
-        issue=finding.title,
-        description=finding.description,
-        stride_category=map_stride(combined_text),
-        likely_impact=(
-            "Potential security weakness that may increase "
-            "attack surface or compromise risk."
+        public_exposure=(
+            "public" in combined_text_lower
+            or "exposed" in combined_text_lower
+        ),
+        privileged_access=(
+            "privilege" in combined_text_lower
+            or "admin" in combined_text_lower
+        ),
+        runtime_activity=(
+            "shell" in combined_text_lower
+            or "runtime" in combined_text_lower
         ),
     )
 
-
-def normalize_findings(
-    findings: list[RawFinding],
-) -> list[NormalizedFinding]:
-
-    return [normalize_finding(f) for f in findings]
+    return NormalizedFinding(
+        source_tool=finding.provider,
+        severity=finding.severity,
+        affected_resource=finding.resource,
+        issue=finding.issue,
+        description=finding.description,
+        stride_category=stride,
+        likely_impact=impact,
+        risk_score=risk_score,
+    )
