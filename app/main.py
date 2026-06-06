@@ -22,6 +22,10 @@ from app.cloud_adapters.gcp_scc import (
 
 from app.correlation_engine import correlate_findings
 
+from app.llm_remediation import (
+    generate_llm_remediation_stub,
+)
+
 
 app = FastAPI(
     title="AI Threat Copilot",
@@ -98,3 +102,24 @@ def analyze(request: ProviderFindingsRequest):
         recommended_actions=actions,
         correlated_risks=correlated_risks,
     )
+
+
+@app.post("/llm-remediation")
+def llm_remediation(request: ProviderFindingsRequest):
+
+    raw_findings = adapt_findings(request)
+
+    normalized = normalize_findings(raw_findings)
+
+    results = [
+        generate_llm_remediation_stub(finding)
+        for finding in normalized
+    ]
+
+    return {
+        "summary": (
+            f"Generated LLM remediation prompts "
+            f"for {len(results)} findings."
+        ),
+        "results": results,
+    }
