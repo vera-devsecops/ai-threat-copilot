@@ -10,15 +10,12 @@ def normalize_finding(finding: RawFinding) -> NormalizedFinding:
     if "public" in combined_text_lower:
         stride = "Information Disclosure"
         impact = "Sensitive data exposure"
-
     elif "privilege" in combined_text_lower:
         stride = "Elevation of Privilege"
         impact = "Potential privilege escalation"
-
     elif "denial" in combined_text_lower:
         stride = "Denial of Service"
         impact = "Service disruption"
-
     else:
         stride = "Tampering"
         impact = "Potential unauthorized modification"
