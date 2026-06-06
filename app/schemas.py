@@ -19,6 +19,7 @@ class NormalizedFinding(BaseModel):
     stride_category: str
     likely_impact: str
     risk_score: int = 0
+    remediation: str = ""
 
 
 class CorrelatedRisk(BaseModel):
