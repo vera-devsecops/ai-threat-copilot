@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict, Any
 
 
 class RawFinding(BaseModel):
@@ -8,6 +8,11 @@ class RawFinding(BaseModel):
     resource: str
     issue: str
     description: str
+
+
+class ProviderFindingsRequest(BaseModel):
+    provider: str = "generic"
+    findings: List[RawFinding]
 
 
 class NormalizedFinding(BaseModel):
@@ -33,3 +38,9 @@ class CopilotReport(BaseModel):
     highest_risks: List[NormalizedFinding]
     recommended_actions: List[str]
     correlated_risks: List[CorrelatedRisk]
+
+
+class AIAssistedReport(BaseModel):
+    summary: str
+    normalized_findings: List[NormalizedFinding]
+    ai_analysis: Dict[str, Any]

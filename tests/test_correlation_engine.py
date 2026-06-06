@@ -4,15 +4,21 @@ from app.correlation_engine import correlate_findings
 def test_attack_path_detection():
     findings = [
         {
-            "title": "Public S3 Bucket",
+            "issue": "Public S3 Bucket",
+            "description": "Bucket is publicly exposed",
+            "resource": "s3-bucket",
             "severity": "HIGH"
         },
         {
-            "title": "Critical Container Vulnerability",
+            "issue": "Critical Container Vulnerability",
+            "description": "Critical remote code execution vulnerability",
+            "resource": "container-image",
             "severity": "CRITICAL"
         },
         {
-            "title": "Privilege Escalation Risk",
+            "issue": "Privilege Escalation Risk",
+            "description": "Container has admin privileges",
+            "resource": "cluster-admin-role",
             "severity": "HIGH"
         }
     ]
@@ -26,7 +32,9 @@ def test_attack_path_detection():
 def test_no_attack_path():
     findings = [
         {
-            "title": "Low Risk Finding",
+            "issue": "Low Risk Finding",
+            "description": "Minor informational finding",
+            "resource": "test-resource",
             "severity": "LOW"
         }
     ]
